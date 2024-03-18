@@ -1,6 +1,19 @@
 # Usage with Mailu
+This guide assumes that you are running docker compose, your mailu folder is "/mailu/" and your mailu nginx is named "mailu-front-1" you also need to run some of the commands as root  
+## Build the Dockerfile
+Clone this repository with the docker file:
+
+	git clone https://github.com/Willow0349/alps.git
+
+Enter the alps folder:
+
+    cd alps
+
+Build the docker image:
+
+    docker build --no-cache --pull -t alps-webmail:1.0 .
+
 ## Copy current nginx config
-Assuming you are running docker compose, your mailu folder is "/mailu/" and your mailu nginx is named "mailu-front-1"  
 To export your nginx config run:
 
 	docker cp mailu-front-1:/etc/nginx/nginx.conf /mailu/overrides/nginx/nginx.conf
@@ -14,7 +27,12 @@ Make sure to keep the indentation the same.
 
 ## Edit docker-compose.yml
 Change `- "/mailu/overrides/nginx:/overrides:ro"` To: `- "/mailu/overrides/nginx/nginx.conf:/etc/nginx/nginx.conf:ro`  
+And Change `image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}webmail:${MAILU_VERSION:-2.0}` To: `image: alps-webmail:1.0`
 Again make sure to keep the indentation the same.
+
+## Reload Mailu
+
+    docker compose down && docker compose up -d
 
 
 # [alps]
