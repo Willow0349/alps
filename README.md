@@ -1,3 +1,22 @@
+# Usage with Mailu
+## Copy current nginx config
+Assuming you are running docker compose, your mailu folder is "/mailu/" and your mailu nginx is named "mailu-front-1"  
+To export your nginx config run:
+
+	docker cp mailu-front-1:/etc/nginx/nginx.conf /mailu/overrides/nginx/nginx.conf
+
+## Edit exported nginx config
+Now edit the nginx config `/mailu/overrides/nginx/nginx.conf` you need to change:  
+`location /webmail/sso.php {` To: `location /webmail/login {`  
+And  
+`try_files $uri /webmail?homepage;` To: `try_files $uri /webmail;`  
+Make sure to keep the indentation the same.
+
+## Edit docker-compose.yml
+Change `- "/mailu/overrides/nginx:/overrides:ro"` To: `- "/mailu/overrides/nginx/nginx.conf:/etc/nginx/nginx.conf:ro`  
+Again make sure to keep the indentation the same.
+
+
 # [alps]
 
 [![GoDoc](https://godoc.org/git.sr.ht/~migadu/alps?status.svg)](https://godoc.org/git.sr.ht/~migadu/alps)
