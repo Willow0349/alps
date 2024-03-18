@@ -6,7 +6,7 @@
 A simple and extensible webmail.
 
 # Usage with Mailu
-This guide assumes that you are running docker compose, your mailu folder is "/mailu/" and your mailu mailu containers are using default names you also need to run some of the commands as root  
+This guide assumes that you are running docker compose, your mailu folder is "/mailu/" and your mailu containers are using default names you also need to run some of the commands as root  
 ## Build the Dockerfile
 Clone this repository with the docker file:
 
