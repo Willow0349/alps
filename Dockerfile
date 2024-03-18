@@ -17,4 +17,4 @@ HEALTHCHECK CMD curl -skfLo /dev/null http://localhost:80/
 WORKDIR /alps
 USER nobody:nogroup
 
-CMD /alps/cmd/alps/alps -theme alps -addr [::]:80 -debug imap+insecure://mailu-front-1:10143 smtp+insecure://mailu-front-1:10025
+CMD /alps/cmd/alps/alps -theme alps -addr [::]:80 imap+insecure://mailu-front-1:10143 smtp+insecure://mailu-front-1:10025
