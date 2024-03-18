@@ -40,7 +40,7 @@
             {{if .Attachments}}<span class="Has attachments">📎</span>{{end}}
             {{if .HasFlag "\\Answered"}}<span class="Replied">↩</span>{{end}}
             {{if .HasFlag "$Forwarded"}}<span class="Forwarded">↪</span>{{end}}
-            <form method="POST" action="/message/{{.Mailbox}}/flag">
+            <form method="POST" action="/webmail/message/{{.Mailbox}}/flag">
               <input type="hidden" name="uids" value="{{.UID}}">
               {{ if .HasFlag "\\Flagged" -}}
               <input type="hidden" name="action" value="remove">

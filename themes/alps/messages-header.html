@@ -5,21 +5,21 @@
   <div class="actions-message">
     <div class="action-group">
       {{ if and (eq .Mailbox.Name "INBOX") (not (eq .Mailbox.Name "Archive")) }}
-      <button form="messages-form" formaction="/message/{{.Mailbox.Name | pathescape}}/move?to=Archive">Archive</button>
+      <button form="messages-form" formaction="/webmail/message/{{.Mailbox.Name | pathescape}}/move?to=Archive">Archive</button>
       {{ end }}
     </div>
 
     <div class="action-group">
       {{ if or (eq .Mailbox.Name "INBOX") (eq .Mailbox.Name "Trash") }}
-      <button form="messages-form" formaction="/message/{{.Mailbox.Name | pathescape}}/move?to=Junk">Report Spam</button>
+      <button form="messages-form" formaction="/webmail/message/{{.Mailbox.Name | pathescape}}/move?to=Junk">Report Spam</button>
       {{ end }}
     </div>
 
     <div class="action-group">
       {{ if ne .Mailbox.Name "Trash"}}
-      <button form="messages-form" formaction="/message/{{.Mailbox.Name | pathescape}}/move?to=Trash">Delete</button>
+      <button form="messages-form" formaction="/webmail/message/{{.Mailbox.Name | pathescape}}/move?to=Trash">Delete</button>
       {{ else }}
-      <button form="messages-form" formaction="/message/{{.Mailbox.Name | pathescape}}/delete">Delete Permanently</button>
+      <button form="messages-form" formaction="/webmail/message/{{.Mailbox.Name | pathescape}}/delete">Delete Permanently</button>
       {{ end }}
     </div>
 
@@ -29,7 +29,7 @@
 
     <div class="action-group">
       {{ if not (eq .Mailbox.Name "INBOX") }}
-      <a class="button-link" href="/delete-mailbox/{{.Mailbox.Name | pathescape}}">Delete folder</a>
+      <a class="button-link" href="/webmail/delete-mailbox/{{.Mailbox.Name | pathescape}}">Delete folder</a>
       {{ end }}
     </div>
   </div>

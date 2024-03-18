@@ -14,7 +14,7 @@
             <a href="{{$back}}" class="button-link">« Back</a>
 
             {{ if and (ne .Mailbox.Name "Archive") (ne .Mailbox.Name "Drafts") (ne .Mailbox.Name "Sent") }}
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/move">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/move">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <input type="hidden" name="to" value="Archive">
               <input type="hidden" name="next" value="{{$back}}">
@@ -23,7 +23,7 @@
             {{ end }}
 
             {{ if and (ne .Mailbox.Name "INBOX") (ne .Mailbox.Name "Sent") (ne .Mailbox.Name "Drafts") }}
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/move">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/move">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <input type="hidden" name="to" value="INBOX">
               <button>
@@ -37,7 +37,7 @@
             {{ end }}
 
             {{ if or (eq .Mailbox.Name "INBOX") (eq .Mailbox.Name "Trash") }}
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/move">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/move">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <input type="hidden" name="next" value="{{$back}}">
               <input type="hidden" name="to" value="Junk">
@@ -46,13 +46,13 @@
             {{ end }}
 
             {{ if or (eq .Mailbox.Name "Trash") (eq .Mailbox.Name "Junk") }}
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/delete">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/delete">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <input type="hidden" name="next" value="{{$back}}">
               <button>Delete Permanently</button>
             </form>
             {{ else }}
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/move">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/move">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <input type="hidden" name="next" value="{{$back}}">
               <input type="hidden" name="to" value="Trash">
@@ -60,7 +60,7 @@
             </form>
             {{ end }}
 
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/flag">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/flag">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <input type="hidden" name="action" value="remove">
               <input type="hidden" name="flags" value="\Seen">
@@ -68,7 +68,7 @@
               <button>Mark&nbsp;Unread</button>
             </form>
 
-            <form class="action-group" method="post" action="/message/{{.Mailbox.Name | pathescape}}/move">
+            <form class="action-group" method="post" action="/webmail/message/{{.Mailbox.Name | pathescape}}/move">
               <input type="hidden" name="uids" value="{{.Message.UID}}">
               <select class="action-group" name="to">
                 {{range .Mailboxes}}
