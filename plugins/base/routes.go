@@ -396,7 +396,7 @@ func handleLogout(ctx *alps.Context) error {
 	ctx.Session.Close()
 	ctx.SetSession(nil)
 	ctx.SetLoginToken("", "")
-	return ctx.Redirect(http.StatusFound, "/webmail/login")
+	return ctx.Redirect(http.StatusFound, "/sso/logout")
 }
 
 type MessageRenderData struct {
