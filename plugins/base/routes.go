@@ -23,7 +23,7 @@ import (
 
 func registerRoutes(p *alps.GoPlugin) {
 	p.GET("/", func(ctx *alps.Context) error {
-		return ctx.Redirect(http.StatusFound, "/mailbox/INBOX")
+		return ctx.Redirect(http.StatusFound, "/webmail/mailbox/INBOX")
 	})
 
 	p.GET("/mailbox/:mbox", handleGetMailbox)
@@ -320,7 +320,7 @@ func handleNewMailbox(ctx *alps.Context) error {
 			})
 		}
 
-		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/mailbox/%s", url.PathEscape(name)))
+		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/mailbox/%s", url.PathEscape(name)))
 	}
 
 	return ctx.Render(http.StatusOK, "new-mailbox.html", &NewMailboxRenderData{
@@ -343,15 +343,17 @@ func handleDeleteMailbox(ctx *alps.Context) error {
 			return c.Delete(mbox.Name()).Wait()
 		})
 		ctx.Session.PutNotice("Mailbox deleted.")
-		return ctx.Redirect(http.StatusFound, "/mailbox/INBOX")
+		return ctx.Redirect(http.StatusFound, "/webmail/mailbox/INBOX")
 	}
 
 	return ctx.Render(http.StatusOK, "delete-mailbox.html", ibase)
 }
 
 func handleLogin(ctx *alps.Context) error {
-	username := ctx.FormValue("username")
-	password := ctx.FormValue("password")
+	//username := ctx.FormValue("username")
+	//password := ctx.FormValue("password")
+	username := ctx.Request().Header.Get("X-Remote-User")
+    password := ctx.Request().Header.Get("X-Remote-User-Token")
 	remember := ctx.FormValue("remember-me")
 
 	renderData := struct {
@@ -384,7 +386,7 @@ func handleLogin(ctx *alps.Context) error {
 		if path := ctx.QueryParam("next"); path != "" && path[0] == '/' && path != "/login" {
 			return ctx.Redirect(http.StatusFound, path)
 		}
-		return ctx.Redirect(http.StatusFound, "/mailbox/INBOX")
+		return ctx.Redirect(http.StatusFound, "/webmail/mailbox/INBOX")
 	}
 
 	return ctx.Render(http.StatusOK, "login.html", &renderData)
@@ -394,7 +396,7 @@ func handleLogout(ctx *alps.Context) error {
 	ctx.Session.Close()
 	ctx.SetSession(nil)
 	ctx.SetLoginToken("", "")
-	return ctx.Redirect(http.StatusFound, "/login")
+	return ctx.Redirect(http.StatusFound, "/webmail/login")
 }
 
 type MessageRenderData struct {
@@ -561,7 +563,7 @@ func submitCompose(ctx *alps.Context, msg *OutgoingMessage, options *composeOpti
 	}
 
 	ctx.Session.PutNotice("Message sent.")
-	return ctx.Redirect(http.StatusFound, "/mailbox/INBOX")
+	return ctx.Redirect(http.StatusFound, "/webmail/mailbox/INBOX")
 }
 
 func handleCompose(ctx *alps.Context, msg *OutgoingMessage, options *composeOptions) error {
@@ -714,7 +716,7 @@ func handleCompose(ctx *alps.Context, msg *OutgoingMessage, options *composeOpti
 			}
 			ctx.Session.PutNotice("Message saved as draft.")
 			return ctx.Redirect(http.StatusFound, fmt.Sprintf(
-				"/message/%s/%d/edit?part=1", drafts.Mailbox, uid))
+				"/webmail/message/%s/%d/edit?part=1", drafts.Mailbox, uid))
 		} else {
 			return submitCompose(ctx, msg, options)
 		}
@@ -1076,7 +1078,7 @@ func handleMove(ctx *alps.Context) error {
 
 	if len(uids) == 0 {
 		ctx.Session.PutNotice("No messages selected.")
-		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/mailbox/%v", url.PathEscape(mboxName)))
+		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mboxName)))
 	}
 
 	to := formOrQueryParam(ctx, "to")
@@ -1104,7 +1106,7 @@ func handleMove(ctx *alps.Context) error {
 	if path := formOrQueryParam(ctx, "next"); path != "" {
 		return ctx.Redirect(http.StatusFound, path)
 	}
-	return ctx.Redirect(http.StatusFound, fmt.Sprintf("/mailbox/%v", url.PathEscape(mboxName)))
+	return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mboxName)))
 }
 
 func handleDelete(ctx *alps.Context) error {
@@ -1124,7 +1126,7 @@ func handleDelete(ctx *alps.Context) error {
 
 	if len(uids) == 0 {
 		ctx.Session.PutNotice("No messages selected.")
-		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/mailbox/%v", url.PathEscape(mboxName)))
+		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mboxName)))
 	}
 
 	err = ctx.Session.DoIMAP(func(c *imapclient.Client) error {
@@ -1155,7 +1157,7 @@ func handleDelete(ctx *alps.Context) error {
 	if path := formOrQueryParam(ctx, "next"); path != "" {
 		return ctx.Redirect(http.StatusFound, path)
 	}
-	return ctx.Redirect(http.StatusFound, fmt.Sprintf("/mailbox/%v", url.PathEscape(mboxName)))
+	return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mboxName)))
 }
 
 func handleSetFlags(ctx *alps.Context) error {
@@ -1230,9 +1232,9 @@ func handleSetFlags(ctx *alps.Context) error {
 	}
 	if len(uids) != 1 || (op == imap.StoreFlagsDel && len(l) == 1 && l[0] == imap.FlagSeen) {
 		// Redirecting to the message view would mark the message as read again
-		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/mailbox/%v", url.PathEscape(mboxName)))
+		return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mboxName)))
 	}
-	return ctx.Redirect(http.StatusFound, fmt.Sprintf("/message/%v/%v", url.PathEscape(mboxName), uids[0]))
+	return ctx.Redirect(http.StatusFound, fmt.Sprintf("/webmail/message/%v/%v", url.PathEscape(mboxName), uids[0]))
 }
 
 const settingsKey = "base.settings"
@@ -1325,7 +1327,7 @@ func handleSettings(ctx *alps.Context) error {
 			return fmt.Errorf("failed to save settings: %v", err)
 		}
 
-		return ctx.Redirect(http.StatusFound, "/mailbox/INBOX")
+		return ctx.Redirect(http.StatusFound, "/webmail/mailbox/INBOX")
 	}
 
 	return ctx.Render(http.StatusOK, "settings.html", &SettingsRenderData{

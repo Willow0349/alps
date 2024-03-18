@@ -1,14 +1,14 @@
 <header>
   <nav>
     {{$page := (index .GlobalData.Path 0)}}
-    <a href="/"
+    <a href="/webmail/"
       {{ if or (eq $page "mailbox") (eq $page "message") (eq $page "compose") }}
       class="active"
       {{ end }}
     >Email</a>
     {{ if call .GlobalData.HavePlugin "caldav" }}
     <a
-      href="/calendar"
+      href="/webmail/calendar"
       {{ if eq $page "calendar" }}
       class="active"
       {{ end }}
@@ -16,7 +16,7 @@
     {{ end }}
     {{ if call .GlobalData.HavePlugin "carddav" }}
     <a
-      href="/contacts"
+      href="/webmail/contacts"
       {{ if eq $page "contacts" }}
       class="active"
       {{ end }}
@@ -25,8 +25,8 @@
     {{ if .GlobalData.LoggedIn }}
     <div>
       <span>{{ .GlobalData.Username }}</span>
-      <a href="/settings">Settings</a>
-      <a href="/logout">Sign Out</a>
+      <a href="/webmail/settings">Settings</a>
+      <a href="/webmail/logout">Sign Out</a>
     </div>
     {{ end }}
   </nav>

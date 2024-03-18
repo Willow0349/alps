@@ -3,7 +3,7 @@
 
 <div class="page-wrap">
   <aside>
-    <a href="/calendar/create" class="new">New event</a>
+    <a href="/webmail/calendar/create" class="new">New event</a>
     <!-- TODO: fetch list of address books -->
     <a href="#" class="active">{{.Calendar.Name}}</a>
     <a href="#">Personal</a>
@@ -31,7 +31,7 @@
           {{if and (eq $base.Now.Month .Month) (eq $base.Now.Day .Day)}}active{{end}}
           ">
           {{if eq $base.Time.Month .Month}}
-            <a href="/calendar/date?date={{.Format "2006-01-02"}}" class="date-link"></a>
+            <a href="/webmail/calendar/date?date={{.Format "2006-01-02"}}" class="date-link"></a>
           {{end}}
           <div class="events">
             {{$events := (call $base.EventsForDate .)}}

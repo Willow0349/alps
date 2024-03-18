@@ -4,7 +4,7 @@
     <h3>{{.Time.Format "January 2006"}}</h3>
     <a href="?month={{.NextPage}}" class="button-link">{{.NextTime.Format "January"}} »</a>
     {{if ne .Time.Month .Now.Month}}
-    <a href="/calendar" class="button-link">Today »</a>
+    <a href="/webmail/calendar" class="button-link">Today »</a>
     {{end}}
   </div>
 

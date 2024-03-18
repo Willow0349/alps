@@ -32,7 +32,7 @@ func (mbox *MailboxInfo) Name() string {
 
 func (mbox *MailboxInfo) URL() *url.URL {
 	return &url.URL{
-		Path: fmt.Sprintf("/mailbox/%v", url.PathEscape(mbox.Name())),
+		Path: fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mbox.Name())),
 	}
 }
 
@@ -95,7 +95,7 @@ func (mbox *MailboxStatus) Name() string {
 
 func (mbox *MailboxStatus) URL() *url.URL {
 	return &url.URL{
-		Path: fmt.Sprintf("/mailbox/%v", url.PathEscape(mbox.Name())),
+		Path: fmt.Sprintf("/webmail/mailbox/%v", url.PathEscape(mbox.Name())),
 	}
 }
 
@@ -186,7 +186,7 @@ type IMAPMessage struct {
 
 func (msg *IMAPMessage) URL() *url.URL {
 	return &url.URL{
-		Path: fmt.Sprintf("/message/%v/%v", url.PathEscape(msg.Mailbox), msg.UID),
+		Path: fmt.Sprintf("/webmail/message/%v/%v", url.PathEscape(msg.Mailbox), msg.UID),
 	}
 }
 

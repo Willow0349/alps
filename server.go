@@ -349,6 +349,7 @@ func isPublic(path string) bool {
 func redirectToLogin(ctx *Context) error {
 	path := ctx.Request().URL.Path
 	to := "/login"
+	// redirect loop with /webmail/login
 	if path != "/" && path != "/login" {
 		to += "?next=" + url.QueryEscape(ctx.Request().URL.String())
 	}

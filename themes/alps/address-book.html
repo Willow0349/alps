@@ -3,7 +3,7 @@
 
 <div class="page-wrap">
   <aside>
-    <a href="/contacts/create" class="new">New contact</a>
+    <a href="/webmail/contacts/create" class="new">New contact</a>
     <!-- TODO: fetch list of address books -->
     <a href="#" class="active">{{.AddressBook.Name}}</a>
     <a href="#">Personal</a>
@@ -30,7 +30,7 @@
           <div class="contact-list-email">
             {{$email := .Card.PreferredValue "EMAIL"}}
             {{if $email}}
-              <a href="/compose?to={{$email}}">{{$email}}</a>
+              <a href="/webmail/compose?to={{$email}}">{{$email}}</a>
             {{end}}
           </div>
           {{end}}

@@ -178,7 +178,7 @@
         {{range $i, $addr := .}}
           {{if $i}},{{end}}
           <strong>{{.Name}}</strong>
-          &lt;<a href="/compose?to={{.Addr}}">{{.Addr}}</a>&gt;
+          &lt;<a href="/webmail/compose?to={{.Addr}}">{{.Addr}}</a>&gt;
         {{end}}
       {{end}}
 
@@ -216,6 +216,6 @@
     </main>
   </div>
 </div>
-<script src="/themes/alps/assets/print.js"></script>
+<script src="/webmail/themes/alps/assets/print.js"></script>
 
 {{template "foot.html"}}
