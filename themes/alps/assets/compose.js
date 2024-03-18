@@ -105,7 +105,7 @@ function attachFile(file) {
 
 		if (typeof attachment.uuid !== "undefined") {
 			const cancel = new XMLHttpRequest();
-			cancel.open("POST", `/compose/attachment/${attachment.uuid}/remove`);
+			cancel.open("POST", `/webmail/compose/attachment/${attachment.uuid}/remove`);
 			cancel.send();
 		}
 	});
@@ -123,7 +123,7 @@ function attachFile(file) {
 		updateState();
 	};
 
-	xhr.open("POST", "/compose/attachment");
+	xhr.open("POST", "/webmail/compose/attachment");
 	xhr.upload.addEventListener("progress", ev => {
 		attachment.progress = ev.loaded / ev.total;
 		updateState();
